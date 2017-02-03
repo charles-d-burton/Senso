@@ -17,12 +17,13 @@
 package burtondesign.com.senso.listeners;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gms.iid.InstanceIDListenerService;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import burtondesign.com.senso.intents.GCMRegistration;
-
-public class MyInstanceIDListenerService extends InstanceIDListenerService {
+public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyInstanceIDLS";
 
@@ -34,9 +35,12 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
-        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
-        Intent intent = new Intent(this, GCMRegistration.class);
-        startService(intent);
+        // Get updated InstanceID token.
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+
+        // TODO: Implement this method to send any registration to your app's servers.
+        //sendRegistrationToServer(refreshedToken);
     }
     // [END refresh_token]
 }

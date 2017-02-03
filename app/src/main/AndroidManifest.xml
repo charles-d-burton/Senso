@@ -4,9 +4,12 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <permission android:name="burtondesign.com.senso.permission.C2D_MESSAGE"
+    <permission
+        android:name="burtondesign.com.senso.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="burtondesign.com.senso.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,29 +28,19 @@
             </intent-filter>
         </activity>
 
-        <!-- [START gcm_receiver] -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+        <service android:name=".listeners.MyFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="burtondesign.com.senso" />
-            </intent-filter>
-        </receiver>
-        <!-- [END gcm_receiver] -->
-
-        <service
-            android:name=".intents.GCMRegistration"
-            android:exported="false">
-        </service>
-        <service
-            android:name="burtondesign.com.senso.listeners.MyGcmListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".listeners.MyFirebaseListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".services.UpdateSensoServer"
+            android:exported="false"></service>
     </application>
 
 </manifest>
